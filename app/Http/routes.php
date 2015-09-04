@@ -11,6 +11,13 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->welcome();
-});
+$app->get('/competitie/public/competities', ['uses' => 'UserController@competities']);
+
+//$app->get('/competitie/public/wedstrijden', ['uses' => 'UserController@wedstrijdenlijst']);
+$app->get('/competitie/public/wedstrijden/{id}', ['uses' => 'UserController@wedstrijden']);
+
+//$app->get('/competitie/public/klassementen', ['uses' => 'UserController@klassementenlijst']);
+$app->get('/competitie/public/klassementen/{id}', ['uses' => 'UserController@klassementen']);
+$app->get('/competitie/public/opzet/{id}', ['uses' => 'UserController@opzet']);
+ 
+//$app->get('/competitie/public/kampioenen', ['uses' => 'UserController@kampioenen']);
