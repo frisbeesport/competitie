@@ -14,7 +14,9 @@ class UserController extends Controller
     public function competities(Request $request)
     {
         $competities = Klassering::select('type', 'jaar_begin', 'jaar_eind', 'locatie', 'competitie', 'geslacht', 'terrein', 'club', 'team', 'ranking_competitie', 'ranking_spirit')
-		               ->orderBy('jaar_begin', 'desc');
+		               ->orderBy('jaar_begin', 'desc')
+                       ->orderBy('speeldag', 'desc')
+                       ->orderBy('divisie', 'desc');
         $competities = $this->filter($request, $competities);
         $competities = $competities->get();
 
@@ -39,18 +41,16 @@ class UserController extends Controller
                 $result[$competitie->competitie] = $fill;
             }
 
-            if ($competitie->speeldag == "" && ($competitie->divisie == "" || $competitie->divisie == 1))
+            if ($competitie->ranking_competitie == "1")
             {
-                if ($competitie->ranking_competitie == 1)
-                {
-                    $result[$competitie->competitie]["kampioen"] = $competitie->team;
-                }
+                $result[$competitie->competitie]["kampioen"] = $competitie->team;
+            }
                 
-                if ($competitie->ranking_spirit == 1)
-                {
-                    $result[$competitie->competitie]["spirit"] = $competitie->team;
-                }        
-            }                
+            if ($competitie->ranking_spirit == "1")
+            {
+                $result[$competitie->competitie]["spirit"] = $competitie->team;
+            }        
+                     
         }
 
         return array_values($result);
